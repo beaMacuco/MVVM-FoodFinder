@@ -29,6 +29,18 @@ extension CoreLocationManager {
 }
 
 protocol CoreLocationManagerDelegate {
-    func locationManagerDelegate(_ manager: CoreLocationManager, didUpdateLocations locations: [CLLocation])
-    func locationManagerDelegateDidChangeAuthorization(_ manager: CoreLocationManager)
+    func coreLocationManager(_ manager: CoreLocationManager, didUpdateLocations locations: [CLLocation])
+    func coreLocationManagerDidChangeAuthorization(_ manager: CoreLocationManager)
+}
+
+extension CLLocationManager: CoreLocationManager {
+    
+    var locationManagerDelegate: CoreLocationManagerDelegate? {
+        get {
+            delegate as? CoreLocationManagerDelegate
+        }
+        set {
+            delegate = newValue as? CLLocationManagerDelegate
+        }
+    }
 }

@@ -15,6 +15,7 @@
 		4F2534642A67FA26009578D3 /* MVVM_FoodFinderUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2534632A67FA26009578D3 /* MVVM_FoodFinderUITests.swift */; };
 		4F2534662A67FA27009578D3 /* MVVM_FoodFinderUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2534652A67FA27009578D3 /* MVVM_FoodFinderUITestsLaunchTests.swift */; };
 		4F2534732A67FA5A009578D3 /* CoreLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2534722A67FA5A009578D3 /* CoreLocationManager.swift */; };
+		4F2534772A67FC60009578D3 /* UserLocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2534762A67FC60009578D3 /* UserLocationService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 		4F2534632A67FA26009578D3 /* MVVM_FoodFinderUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MVVM_FoodFinderUITests.swift; sourceTree = "<group>"; };
 		4F2534652A67FA27009578D3 /* MVVM_FoodFinderUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MVVM_FoodFinderUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		4F2534722A67FA5A009578D3 /* CoreLocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreLocationManager.swift; sourceTree = "<group>"; };
+		4F2534762A67FC60009578D3 /* UserLocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLocationService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -136,6 +138,7 @@
 			isa = PBXGroup;
 			children = (
 				4F2534722A67FA5A009578D3 /* CoreLocationManager.swift */,
+				4F2534762A67FC60009578D3 /* UserLocationService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -279,6 +282,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F25344A2A67FA25009578D3 /* ContentView.swift in Sources */,
+				4F2534772A67FC60009578D3 /* UserLocationService.swift in Sources */,
 				4F2534482A67FA25009578D3 /* MVVM_FoodFinderApp.swift in Sources */,
 				4F2534732A67FA5A009578D3 /* CoreLocationManager.swift in Sources */,
 			);
