@@ -6,3 +6,8 @@
 //
 
 import Foundation
+
+struct DecodableObject: Codable {
+    let id: Int
+    let name: String
+}
