@@ -6,3 +6,16 @@
 //
 
 import Foundation
+import CoreLocation
+
+extension CLLocationManager: CoreLocationManager {
+
+    var locationManagerDelegate: CoreLocationManagerDelegate? {
+        get {
+            delegate as? CoreLocationManagerDelegate
+        }
+        set {
+            delegate = newValue as? CLLocationManagerDelegate
+        }
+    }
+}

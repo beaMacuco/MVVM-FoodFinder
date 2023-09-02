@@ -10,26 +10,21 @@ import CoreLocation
 import Combine
 
 protocol LocationService {
+    var location: PassthroughSubject<CLLocation, Error> { get }
+    var isAuthorized: CurrentValueSubject<Bool, Never>  { get }
     func setUp()
-    func startMonitoring()
-    func stopMonitoring()
-    var location: PassthroughSubject<CLLocation?, Never> { get }
-    var isAuthorized: CurrentValueSubject<Bool, Never> { get }
+    func requestLocation()
 }
 
-final class UserLocationService: NSObject, LocationService, ObservableObject {
-    private let minimumDistance = 100.0
-    private(set) var previousLocation: CLLocation?
-    private(set) var currentLocation: CLLocation?
-    private var cancellables = Set<AnyCancellable>()
+final class UserLocationService: NSObject, LocationService {
     private(set) var locationManager: CoreLocationManager
-    private(set) var location = PassthroughSubject<CLLocation?, Never>()
     private(set) var isAuthorized: CurrentValueSubject<Bool, Never>
+    private(set) var location: PassthroughSubject<CLLocation, Error>
     
     init(locationManager: CoreLocationManager = CLLocationManager()) {
         self.locationManager = locationManager
         self.isAuthorized = CurrentValueSubject<Bool, Never>(locationManager.isLocationMonitoringAuthorized)
-        super.init()
+        self.location = PassthroughSubject<CLLocation, Error>()
     }
     
     func setUp() {
@@ -38,34 +33,18 @@ final class UserLocationService: NSObject, LocationService, ObservableObject {
     
     private func configureLocation() {
         locationManager.locationManagerDelegate = self
-        locationManager.requestAlwaysAuthorization()
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.pausesLocationUpdatesAutomatically = true
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.activityType = .fitness
     }
     
-    func startMonitoring() {
-        locationManager.startUpdatingLocation()
-    }
-    
-    func stopMonitoring() {
-        locationManager.stopUpdatingLocation()
-        resetLocation()
-    }
-    
-    private func resetLocation() {
-        previousLocation = nil
-        currentLocation = nil
-    }
-    
-    private func isDistanceEqualToOrHigherThanMinimumDistance(location: CLLocation) -> Bool {
-        guard let previousLocation = previousLocation else {
-            return true
-        }
-        return previousLocation.distance(from: location) >= minimumDistance
+    func requestLocation() {
+        locationManager.requestLocation()
     }
 }
 
 extension UserLocationService: CLLocationManagerDelegate {
+    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         coreLocationManager(manager, didUpdateLocations: locations)
     }
@@ -73,20 +52,13 @@ extension UserLocationService: CLLocationManagerDelegate {
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         coreLocationManagerDidChangeAuthorization(manager)
     }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        coreLocationManager(manager, didFailWithError: error)
+    }
 }
 
 extension UserLocationService: CoreLocationManagerDelegate {
-    
-    func coreLocationManager(_ manager: CoreLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let lastestLocation = locations.last,
-              isDistanceEqualToOrHigherThanMinimumDistance(location: lastestLocation) else {
-            return
-        }
-        let previous = currentLocation
-        currentLocation = lastestLocation
-        previousLocation = previousLocation == nil ? currentLocation : previous
-        location.send(currentLocation)
-    }
     
     func coreLocationManagerDidChangeAuthorization(_ manager: CoreLocationManager) {
         switch manager.authorizationStatus {
@@ -96,8 +68,20 @@ extension UserLocationService: CoreLocationManagerDelegate {
             isAuthorized.send(false)
         case .notDetermined:
             isAuthorized.send(false)
-            locationManager.requestAlwaysAuthorization()
-        default: break
+            locationManager.requestWhenInUseAuthorization()
+        default:
+            isAuthorized.send(false)
         }
+    }
+    
+    func coreLocationManager(_ manager: CoreLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let currentLocation = locations.last else {
+            return
+        }
+        location.send(currentLocation)
+    }
+    
+    func coreLocationManager(_ manager: CoreLocationManager, didFailWithError error: Error) {
+        location.send(completion: .failure(error))
     }
 }
