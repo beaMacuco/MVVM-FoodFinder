@@ -6,3 +6,10 @@
 //
 
 import Foundation
+import os
+
+extension Logger {
+    static func make(for category: AnyClass) -> Logger {
+        Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: String(describing: category))
+    }
+}
