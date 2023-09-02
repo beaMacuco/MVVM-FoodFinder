@@ -9,7 +9,7 @@ import Foundation
 
 struct GoogleRequestDecorator: Networking {
     private let networking: Networking
-    private static let API_KEY = "AIzaSyDaHRZmGb5AUxyYrjMsxSM4834VsVoq_30"
+    private static let API_KEY = "Add key here!!!"
     
     init(networking: Networking = NetworkRequest()) {
         self.networking = networking
