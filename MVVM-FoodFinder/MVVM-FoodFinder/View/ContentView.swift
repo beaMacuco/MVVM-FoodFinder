@@ -8,14 +8,19 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject var viewModel: PlacesViewModel = PlacesViewModel()
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+        NavigationStack {
+            Group {
+                if viewModel.isLocationAuthorized {
+                    PlacesListView(viewModel: viewModel)
+                } else {
+                    AuthorizationNeededView()
+                }
+            }
+            .navigationTitle(StaticViewValues.LocalisableStrings.navigationTitle)
         }
-        .padding()
     }
 }
 

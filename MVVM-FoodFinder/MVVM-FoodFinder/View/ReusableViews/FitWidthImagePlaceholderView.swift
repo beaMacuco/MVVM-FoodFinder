@@ -10,6 +10,6 @@ import SwiftUI
 struct FitWidthImagePlaceholderView: View {
     
     var body: some View {
-        FitWidthImageView(image: Image(systemName: SFSymbols.imagePlaceholder))
+        FitWidthImageView(image: Image(systemName: Symbols.imagePlaceholder))
     }
 }

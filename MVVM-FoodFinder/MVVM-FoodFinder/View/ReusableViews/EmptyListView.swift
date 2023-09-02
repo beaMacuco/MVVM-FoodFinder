@@ -11,7 +11,7 @@ struct EmptyListView: View {
     @Binding var shouldRefresh: Bool
     
     var body: some View {
-        VStack(alignment: .center, spacing: StaticViewValues.ViewSpacing.viewSpacing) {
+        VStack(alignment: .center, spacing: StaticViewValues.ViewSpacing.largeVerticalView) {
             Text(StaticViewValues.LocalisableStrings.emptyView)
             
             Button {

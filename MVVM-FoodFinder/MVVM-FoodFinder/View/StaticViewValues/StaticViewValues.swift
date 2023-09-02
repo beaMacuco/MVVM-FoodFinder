@@ -16,10 +16,11 @@ struct StaticViewValues {
         static let navigationTitle = "Places"
         static let emptyView = "There are no items to display :("
         static let refresh = "Refresh"
+        static let rating = "Rating"
+        static let priceLevel = "Price"
     }
     
     struct ViewSpacing {
-        
-        static let viewSpacing = 15.0
+        static let largeVerticalView = 15.0
     }
 }
